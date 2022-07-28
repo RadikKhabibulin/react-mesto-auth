@@ -1,0 +1,11 @@
+.card {
+    background: #FFFFFF;
+    position: relative;
+    list-style: none;
+    width: 100%;
+    max-width: 282px;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+    color: black;
+}

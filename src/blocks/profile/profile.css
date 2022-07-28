@@ -1,0 +1,15 @@
+.profile {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(min-content, max-content)) 1fr;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .profile {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        justify-items: center;
+    }
+}

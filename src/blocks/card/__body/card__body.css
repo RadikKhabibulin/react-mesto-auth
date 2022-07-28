@@ -1,0 +1,8 @@
+.card__body {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 22px 20px 0;
+    box-sizing: border-box;
+    gap: 25px;
+}
