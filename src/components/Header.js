@@ -7,10 +7,8 @@ function Header({loggedIn, email, onHandleLogout}) {
   const pathname = location.pathname;
 
   let linkName = 'Выйти';
-  // let newPath = '/logout';
   if (!loggedIn) {
     linkName = pathname === '/sign-up' ? 'Войти' : 'Регистрация';
-    // newPath = pathname=== '/sign-up' ? '/sign-in' : '/sign-up';
   }
 
   function clickButtonHandler(buttonName) {

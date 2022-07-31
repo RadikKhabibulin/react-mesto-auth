@@ -2,7 +2,6 @@ import success from '../images/popup/success.svg'
 import fail from '../images/popup/fail.svg'
 
 function PopupWithAlert({isOpen, onClose, result, text}) {
-  console.log(result);
   return (
     <div className={`popup popup_type_alert ${isOpen ? "popup_popup-opened" : ""}`}>
       <div className="popup__container">
