@@ -18,4 +18,4 @@
 
 ### Ссылка на проект
 
-[Mesto Russia](https://radikkhabibulin.github.io/mesto-react/index.html)
+[Mesto Russia](https://radikkhabibulin.github.io/react-mesto-auth/)
