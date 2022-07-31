@@ -1,7 +1,9 @@
 import React from 'react';
+import { Route, Navigate, Routes, useNavigate } from "react-router-dom";
 
 import '../index.css';
 import api from "../utils/Api";
+import { getContent } from '../utils/Auth';
 import { CurrentUserContext, defaultUser } from '../contexts/CurrentUserContext';
 
 import Header from './Header';
@@ -12,15 +14,24 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
+import PopupWithAlert from './PopupWithAlert';
+import Login from './Login';
+import Register from './Register';
 
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsPlacePopupOpen] = React.useState(false);
+  const [isRegsPopupOpen, setIsRegsPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState(defaultUser);
   const [cards, setCards] = React.useState([]);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [alertPopupResult, setAlertPopupResult] = React.useState(false);
+  const [alertPopupText, setAlertPopupText] = React.useState('');
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -42,6 +53,10 @@ function App() {
     })
   }, [])
 
+  React.useEffect(() => {
+    tokenCheck();
+  }, [])
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
   }
@@ -58,11 +73,18 @@ function App() {
     setSelectedCard(card);
   }
 
+  function handelRegsResult(result, text) {
+    setAlertPopupResult(result);
+    setAlertPopupText(text);
+    setIsRegsPopupOpen(true);
+  }
+
   function closeAllPopup() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsPlacePopupOpen(false);
     setSelectedCard(null);
+    setIsRegsPopupOpen(false);
   }
 
   function handleUpdateUser({name, about}) {
@@ -122,19 +144,56 @@ function App() {
     }
   }
 
+  function handleLogin() {
+    tokenCheck();
+  }
+
+  function handleLogout() {
+    setLoggedIn(false);
+    setEmail('');
+    navigate('/');
+  }
+
+  function tokenCheck() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      console.log('check');
+      getContent(jwt).then(res => {
+        if (res) {
+          setLoggedIn(true);
+          setEmail(res.data.email);
+          navigate('/');
+        }
+      })
+    }
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
-        <Main
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          cards={cards}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
+        <Header loggedIn={loggedIn} email={email} onHandleLogout={handleLogout}/>
+        <Routes>
+          <Route path='/' element={loggedIn ?
+            <Main
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              cards={cards}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+            /> : <Navigate to="./sign-in" />
+          }/>
+          <Route path="/sign-in" element={
+            <Login onHandleLogin={handleLogin} />
+          } />
+          <Route path="/sign-up" element={
+            <Register onHandelRegsResult={handelRegsResult}/>
+          } />
+          <Route path="/*" element={
+            <Navigate to="./sign-in" />
+          }/>
+        </Routes>
         <Footer />
 
         <EditAvatarPopup
@@ -164,6 +223,12 @@ function App() {
           name="delete-place"
           buttonText="Да"
           onClose={closeAllPopup}
+        />
+        <PopupWithAlert
+          isOpen={isRegsPopupOpen}
+          onClose={closeAllPopup}
+          result={alertPopupResult}
+          text={alertPopupText}
         />
       </div>
     </CurrentUserContext.Provider>

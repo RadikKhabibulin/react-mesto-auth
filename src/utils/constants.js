@@ -3,8 +3,10 @@ const apiVersion = 'v1';
 const group = 'cohort-42';
 const mestoApiLink = `${serverLink}/${apiVersion}/${group}`;
 const token = '396f2449-6428-4b74-b022-c9b3a7095f65';
+const authBaseUrl ='https://auth.nomoreparties.co';
 
 export {
     mestoApiLink,
-    token
+    token,
+    authBaseUrl
 };

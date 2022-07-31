@@ -1,8 +1,9 @@
 .header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     align-self: center;
+    align-items: baseline;
     width: 100%;
     max-width: 880px;
     min-height: 119px;
