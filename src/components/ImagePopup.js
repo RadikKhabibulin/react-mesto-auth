@@ -2,7 +2,7 @@ import logo from '../images/header/logo.svg';
 
 function ImagePopup({card, onClose}) {
   return (
-    <div className={`popup popup_type_place-image ${card ? "popup_popup-opened" : ""}`}>
+    <div className={`popup popup_type_place-image ${card && "popup_popup-opened"}`}>
       <div className="popup__image-container">
         <img className="popup__image" src={card ? card.link : logo} alt="Место" />
         <h3 className="popup__image-title">{card ? card.name : 'Mesto'}</h3>

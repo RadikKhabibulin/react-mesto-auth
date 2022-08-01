@@ -1,4 +1,4 @@
-.header__button {
+.header__link {
     color: white;
     text-decoration: none;
     background-color: transparent;
@@ -7,13 +7,13 @@
     transition: 0.25s ease;
 }
 
-.header__button:hover {
+.header__link:hover {
     opacity: 0.6;
     cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
-    .header__button {
+    .header__link {
         font-size: 14px;
         line-height: 17px;
         margin-right: 27px;

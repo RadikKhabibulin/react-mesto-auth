@@ -1,12 +1,10 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { register } from "../utils/Auth";
+import { useState } from 'react';
+import { Link } from "react-router-dom";
 
 
-function Register({onHandelRegsResult}) {
-  const [email, setEmail] = React.useState('');
-  const [password , setPassword] = React.useState('');
-  const navigate = useNavigate();
+function Register({onHandelRegister}) {
+  const [email, setEmail] = useState('');
+  const [password , setPassword] = useState('');
 
   function handleEmailChange(e) {
     setEmail(e.target.value);
@@ -18,14 +16,7 @@ function Register({onHandelRegsResult}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    register(email, password)
-    .then(() => {
-      onHandelRegsResult(true, 'Вы успешно зарегистрировались!');
-      navigate('/sign-in');
-    })
-    .catch(() => {
-      onHandelRegsResult(false, 'Что-то пошло не так! Попробуйте ещё раз.');
-    })
+    onHandelRegister(email, password);
   }
 
   return (

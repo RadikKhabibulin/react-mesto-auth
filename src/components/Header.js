@@ -1,25 +1,17 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Routes, Route } from "react-router-dom";
 
 
 function Header({loggedIn, email, onHandleLogout}) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const pathname = location.pathname;
 
-  let linkName = 'Выйти';
-  if (!loggedIn) {
-    linkName = pathname === '/sign-up' ? 'Войти' : 'Регистрация';
-  }
-
-  function clickButtonHandler(buttonName) {
-    if (buttonName === 'Выйти') {
+  function clickButtonHandler() {
+    if (loggedIn) {
       localStorage.removeItem('jwt');
       onHandleLogout();
     }
-    else if (buttonName === 'Регистрация')
-      navigate('sign-up');
-    else
+    else {
       navigate('sign-in');
+    }
   }
 
   return (
@@ -27,12 +19,23 @@ function Header({loggedIn, email, onHandleLogout}) {
       <Link to="/" className="header__logo" />
       <nav className="header__nav">
         <p className="header__user-email">{email}</p>
-        <button
-          className={`header__button ${loggedIn ? 'header__button_logout' : ''}`}
-          onClick={() => clickButtonHandler(linkName)}
-        >
-          {linkName}
-        </button>
+        <Routes>
+          <Route path="/sign-in" element={
+            <Link to="/sign-up" className="header__link">Регистрация</Link>
+          } />
+          <Route path="/sign-up" element={
+            <Link to="/sign-in" className="header__link">Войти</Link>
+          } />
+          <Route path="/" element={
+            <Link
+              to="/sign-in"
+              className={`header__link ${loggedIn && 'header__link_logout'}`}
+              onClick={clickButtonHandler}
+            >
+              Выйти
+            </Link>
+          } />
+        </Routes>
       </nav>
     </header>
   );
